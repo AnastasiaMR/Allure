@@ -19,8 +19,8 @@ public class DataGenerator {
         return faker.address().cityName();
     }
 
-    public static String generateDate() {
-        return LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    public static String generateDate(int shift) {
+        return LocalDate.now().plusDays(shift).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public static String generateName() {

@@ -26,21 +26,22 @@ class DeliveryTest {
     @Test
     void shouldTestValidation() {
         $("[data-test-id=city] input").setValue(DataGenerator.generateCity());
-        $("[data-test-id=date] input").setValue(DataGenerator.generateDate());
+        $("[data-test-id=date] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(DataGenerator.generateDate(4));
         $("[data-test-id=name] input").setValue(DataGenerator.generateName());
         $("[data-test-id=phone] input").setValue(DataGenerator.generatePhone());
         $("[data-test-id=agreement]").click();
         $(withText("Запланировать")).click();
         $("[data-test-id='success-notification']").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(text("Успешно!"));
-        assertEquals(DataGenerator.generateDate(), $("[data-test-id=date] input").getValue());
-        assertEquals("Встреча успешно запланирована на " + DataGenerator.generateDate(),
-                $(withText("Встреча успешно запланирована на")).getText());
-        $("[data-test-id=date] input").setValue(DataGenerator.generateDate());
+        $("[data-test-id='success-notification'] .notification__content")
+                .shouldHave(exactText("Встреча успешно запланирована на " + DataGenerator.generateDate(4)));
+        $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(DataGenerator.generateDate(5));
         $(withText("Запланировать")).click();
         $(withText("Перепланировать")).click();
         $("[data-test-id='success-notification']").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(text("Успешно!"));
-        assertEquals(DataGenerator.generateDate(), $("[data-test-id=date] input").getValue());
-        assertEquals("Встреча успешно запланирована на " + DataGenerator.generateDate(), $(withText("Встреча успешно запланирована на")).getText());
+        $("[data-test-id='success-notification'] .notification__content")
+                .shouldHave(exactText("Встреча успешно запланирована на " + DataGenerator.generateDate(5)));;
     }
 }
 
